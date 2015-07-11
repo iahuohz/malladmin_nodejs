@@ -1,0 +1,3 @@
+{"_id":{"$oid":"559cead74946f5d816122a75"},"password":"111111","roles":["productadmin"],"username":"jam"}
+{"_id":{"$oid":"559ceade4946f5d816122a76"},"password":"111111","roles":["salesadmin"],"username":"jerry"}
+{"_id":{"$oid":"55a10fff9580343e896f7c7e"},"password":"111111","roles":["sysadmin"],"username":"admin"}
