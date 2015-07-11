@@ -1,0 +1,372 @@
+{{#contentFor 'styles'}}
+    <link rel="stylesheet" href="/jqueryui/jquery-ui-1.10.4.custom.min.css"/>
+{{/contentFor}}
+<ol class="breadcrumb">
+  <li>图书管理</li>
+  <li class="active">添加图书</li>
+</ol>
+
+<form id="createForm" novalidate data-bind="validationOptions:{insertMessages: false}">
+	<div class="form-horizontal">
+		<div class="table-title">图书信息</div>
+    <hr />
+    <div class="form-group">
+      <lable class="control-label col-md-2">图书标题：</lable>
+      <div class="col-md-4" data-bind="validationOptions: {insertMessages: false}">
+	      <input type="text" class="form-control" name="title" data-bind="value:title">
+      </div>
+      <div class="form-control-static">
+          <span data-bind="validationMessage: title" class="error"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <lable class="control-label col-md-2">ISBN：</lable>
+      <div class="col-md-4">
+	      <input type="text" class="form-control" name="title" data-bind="value:isbn">
+      </div>
+      <div class="form-control-static">
+          <span data-bind="validationMessage: isbn" class="error"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <lable class="control-label col-md-2">类别：</lable>
+      <div class="col-md-4" id="categoriesDiv">
+	     {{#dropdownList 'categories' '选择一个类别' model}}
+          <option value={{_id}}>{{name}}</option>
+         {{/dropdownList}}
+      </div>
+      <div class="form-control-static">
+          <span data-bind="validationMessage: category" class="error"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <lable class="control-label col-md-2">出版社：</lable>
+      <div class="col-md-4">
+	      <input type="text" class="form-control" id="publisher" name="publisher">
+      </div>
+      <div class="form-control-static">
+          <span data-bind="text:publisher"></span>
+          <span data-bind="validationMessage: publisher" class="error"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <lable class="control-label col-md-2">出版日期：</lable>
+      <div class="col-md-4">
+	      <input type="date" class="form-control" name="publishdate" data-bind="value:publishdate">
+      </div>
+      <div class="form-control-static">
+          <span data-bind="validationMessage: publishdate" class="error"></span>
+      </div>
+    </div>
+    <div class="form-group">
+        <lable class="control-label col-md-2">作者：</lable>
+        <div class="col-md-4">
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" data-bind="value:newcountry" placeholder="国籍">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" data-bind="value:newname, valueUpdate:'afterkeydown'" 
+                            placeholder="姓名">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-xs" 
+                            data-bind="click:addAuthor,enable:canAddAuthor()">增加</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="form-control-static">
+            <div data-bind="foreach:authors">
+              <span data-bind="text:country"></span>
+              <span data-bind="text:name"></span>
+              <button type='button' class="btn btn-xs btn-danger"
+                  data-bind="click:$parent.deleteAuthor">删除</button>
+              |
+          </div>
+            <span data-bind="validationMessage: authors" class="error"></span>
+        </div>
+    </div>
+    <div class="form-group">
+      <lable class="control-label col-md-2">页数：</lable>
+      <div class="col-md-4">
+	      <input type="number" class="form-control" name="pages" data-bind="value:pages">
+      </div>
+      <div class="form-control-static">
+          <span data-bind="validationMessage: pages" class="error"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <lable class="control-label col-md-2">版次：</lable>
+      <div class="col-md-4">
+	      <input type="number" class="form-control" name="edition" data-bind="value:edition">
+      </div>
+      <div class="form-control-static">
+          <span data-bind="validationMessage: edition" class="error"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <lable class="control-label col-md-2">原价：</lable>
+      <div class="col-md-4">
+	      <input type="number" step="0.1" class="form-control" name="listprice" data-bind="value:listprice">
+      </div>
+      <div class="form-control-static">
+          <span data-bind="validationMessage: listprice" class="error"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <lable class="control-label col-md-2">折扣价：</lable>
+      <div class="col-md-4">
+	      <input type="number" step="0.1" class="form-control" name="reducedprice" data-bind="value:reducedprice">
+      </div>
+      <div class="form-control-static">
+          <span data-bind="validationMessage: reducedprice" class="error"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <lable class="control-label col-md-2">关键字：</lable>
+      <div class="col-md-4">
+	      <input type="text" class="form-control" id="keyword" name="keyword">
+      </div>
+      <div class="form-control-static">
+          <div data-bind="foreach:keywords">
+              <span data-bind="text:$data"></span>
+              <button type='button' class="btn btn-xs btn-danger"
+                  data-bind="click:$parent.deleteKeyword">删除</button>
+              |
+          </div>
+          <input type='hidden' id="keywordsValue" data-bind="value:keywords"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <lable class="control-label col-md-2">描述：</lable>
+      <div class="col-md-4">
+          <textarea class="form-control" rows="6" name="description" placeholder="1000字以内的文字描述" 
+              data-bind="value:description"></textarea>
+      </div>
+      <div class="form-control-static">
+      </div>
+    </div>
+   
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-4">
+            <input type="button" value="确定" class="btn btn-primary" data-bind="click:createBook" />
+            <a href="/book/search" class="btn btn-default">返回</a>
+        </div>
+    </div>
+	</div>
+</form>
+
+{{#contentFor 'scripts'}}
+  <script src="/javascripts/jquery.validate.min.js"></script>
+  <script src="/javascripts/knockout-3.1.0.js"></script>
+  <script src="/javascripts/knockout.validation.js"></script>
+  <script src="/jqueryui/jquery-ui-1.10.4.custom.min.js"></script>
+  <script src="/javascripts/bootbox.min.js"></script>
+  <script>
+    var publishers;
+    var keywords;
+	$(function () {
+        $.getJSON('/publisher/search', function(data){
+            publishers = data;
+        });
+        $.getJSON('/keyword/search', function(data){
+            keywords = data;
+        });
+        
+        var ePublisher = $("#publisher");
+        ePublisher.autocomplete({
+            source: function(request, response){
+                var pub = request.term.toLowerCase();
+                var results = publishers.filter(function (value, index) {
+                        if (value.name.toLowerCase().indexOf(pub) != -1)
+                            return true;
+                    });
+                return response(results);
+            },
+            focus: function () {
+                return false;
+            },
+            select: function (event, ui) {
+                ePublisher.val(ui.item.name);
+                book.publisher(ui.item.name);
+                return false;
+            }
+        });
+        ePublisher.data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append("<a>" + item.name + "</a>")
+                .appendTo(ul);
+        };
+        
+        var eKeyword = $("#keyword");
+        eKeyword.autocomplete({
+            source: function(request, response){
+                var key = request.term.toLowerCase();
+                var results = keywords.filter(function (value, index) {
+                        if (value.name.toLowerCase().indexOf(key) != -1)
+                            return true;
+                    });
+                return response(results);
+            },
+            focus: function () {
+                return false;
+            },
+            select: function (event, ui) {
+                var key = ui.item.name;
+                var length = book.keywords().length;
+                for(var i=0;i<length;i++){
+                    if(book.keywords()[i] == key)
+                        return false;
+                }
+                book.keywords.push(key);
+                eKeyword.val("");
+                return false;
+            }
+        });
+        eKeyword.data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append("<a>" + item.name + "</a>")
+                .appendTo(ul);
+        };
+        
+        $("#createForm").validate({
+            submitHandler: function (form) {
+                form.submit();
+            },
+            rules: {
+                name: {
+                    required: true,
+                    maxlength: 50
+                }
+            },
+            messages: {
+                name : {
+                    required: "*",
+                    maxlength: "最大字符长度为50"
+                }
+            },
+            errorPlacement: function(error, element) {
+               error.appendTo(element.parent().next());
+            }
+        });
+    });
+              
+        function BookModel(){
+            var self = this;
+            
+            ko.validation.rules['authorsRequired'] = {
+                validator: function (val) {
+                    if(val.length == 0)
+                        return false;
+                    return true;
+                },
+                message: '必须填写至少1个作者'
+            };
+            ko.validation.registerExtenders();
+
+            
+            self.title = ko.observable().extend({
+                required:{params:true, message: "*"},
+                maxLength:{params:50, message:"最大长度50个字符"}
+            });
+            self.isbn = ko.observable().extend({
+                required:{params:true, message: "*"},
+                maxLength:{params:50, message:"最大长度50个字符"}
+            });
+            self.category = ko.observable().extend({
+                required:{params:true, message: "*"}
+            });
+            self.publisher = ko.observable().extend({
+                required:{params:true, message: "*"},
+                maxLength:{params:50, message:"最大长度50个字符"}
+            });
+            self.publishdate = ko.observable().extend({
+                required:{params:true, message: "*"},
+                date: { params: true, message: "请填写正确的日期格式" }
+            });
+            self.authors = ko.observableArray().extend({
+                authorsRequired:{message: "*"},
+            });
+            self.pages = ko.observable().extend({
+                required:{params:true, message: "*"},
+                pattern: {params: '^[0-9]*$', message: "必须填写正整数"}
+            });
+            self.edition = ko.observable().extend({
+                required:{params:true, message: "*"},
+                pattern: {params: '^[0-9]*$', message: "必须填写正整数"}
+            });
+            self.listprice = ko.observable().extend({
+                required:{params:true, message: "*"},
+                min: {params: 0, message: "价格不能小于0"},
+                max: {params: 10000, message: "价格不能大于10000"}
+            });
+            self.reducedprice = ko.observable().extend({
+                required:{params:true, message: "*"},
+                min: {params: 0, message: "价格不能小于0"},
+                max: {params: 10000, message: "价格不能大于10000"}
+            });
+            self.keywords = ko.observableArray();
+            self.description = ko.observable().extend({
+                maxLength: {params: 1000, message: "描述不能超过1000个字符"}
+            });
+            
+            self.newcountry = ko.observable();
+            self.newname = ko.observable();
+            self.canAddAuthor = function(){
+                return !!self.newname();
+            };
+            
+            self.addAuthor = function () {
+                var length = self.authors().length;
+                for(var i=0;i<length;i++){
+                    if(self.authors()[i].name == self.newname()){
+                        return;
+                    }
+                }
+                self.authors.push({country: self.newcountry()?self.newcountry():"", name: self.newname()});
+                self.newcountry("");
+                self.newname("");
+            };
+            self.deleteAuthor = function () {
+                self.authors.remove(this);
+            };
+            
+            self.deleteKeyword = function(){
+                // keywords是一个字符串数组，需要采用remove(function())的形式才能正确删除元素
+                var key = this;
+                self.keywords.remove(function(item){
+                    return item == key;
+                });
+            };
+            
+            self.createBook = function(){
+                if(self.isValid()){
+                    var url = "/book/create";
+                    var data = ko.toJSON(book);
+                    $.ajax({
+                       type: 'POST',
+                       url: url,
+                       data : data, 
+                       dataType: "json",
+                       contentType: 'application/json; charset=utf-8',
+                       success:function(data, status){
+                           if(data.success){
+                            bootbox.alert("图书添加成功！");     
+                           } else{
+                               bootbox.alert(data.error);
+                           }
+                       }
+                    })
+                };
+            };
+            
+            self.errors = ko.validation.group(self);
+            self.errors.showAllMessages();
+        }     
+           
+        var book = new BookModel();
+        ko.applyBindings(book);
+    </script>
+{{/contentFor}}

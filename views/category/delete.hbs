@@ -1,0 +1,28 @@
+<ol class="breadcrumb">
+  <li>书目管理</li>
+  <li class="active">删除主目录</li>
+</ol>
+
+{{> operationresult}}
+
+<form id="createForm" method="post" action="/category/delete/{{model._id}}">
+	<div class="form-horizontal">
+		<div class="table-title">主目录信息</div>
+    <hr />
+    <div class="form-group">
+      <lable class="control-label col-md-2">目录名称：</lable>
+      <div class="col-md-4 form-control-static">
+	      {{model.name}}
+      </div>
+    </div>
+	  <div class="form-group">
+      <div class="col-md-offset-2 alert alert-danger" role="alert">确定要删除该目录吗？</div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-4">
+            <input type="submit"  value="删除" class="btn btn-danger" />
+            <a href="/category" class="btn btn-default">返回</a>
+        </div>
+    </div>
+	</div>
+</form>

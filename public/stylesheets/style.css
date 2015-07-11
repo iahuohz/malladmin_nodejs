@@ -1,0 +1,45 @@
+body {
+    padding: 50px 0;
+    font-family:微软雅黑, Arial
+}
+
+.navbar-collapse {
+    font-size: 18px;
+}
+
+.navbar-brand {
+    padding: 0 20px 0 0;
+}
+
+.error{
+    color:red;
+}
+
+.validationMessage{
+            color:red;
+        }
+
+.table-title {
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.table-pager{
+    float:left;
+}
+
+.table-menu {
+    float:right;
+    padding:5px;
+}
+
+.pagination {
+    margin:0;
+    padding:0;
+}
+
+.remove-button{
+    cursor: pointer;
+}
+

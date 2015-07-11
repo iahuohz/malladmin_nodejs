@@ -1,0 +1,17 @@
+{{#if operationResult}}
+  {{#if operationResult.success}}
+    <div class="alert alert-success" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{operationResult.message}}
+    </div>
+  {{else}}
+    <div class="alert alert-danger" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{operationResult.message}}
+    </div>
+  {{/if}}
+{{/if}}

@@ -1,0 +1,210 @@
+{{#contentFor 'styles'}}
+	<style>
+		
+	</style>
+{{/contentFor}}
+
+<ol class="breadcrumb">
+  <li>图书管理</li>
+  <li class="active">图书检索</li>
+</ol>
+
+<form method="get">
+    <div class="form-inline">
+        <div class="form-group">
+            <input type="text" name="title" class="form-control" value="{{search.title}}" placeholder="书名"/>
+        </div>
+        <div class="form-group">
+            <input type="text" name="isbn" class="form-control" value="{{search.isbn}}" placeholder="ISBN"/>
+        </div>
+        <div class="form-group">
+            <input type="text" name="name" class="form-control" value="{{search.name}}" placeholder="作者或译者"/>
+        </div>
+        <div class="form-group">
+            <input type="text" name="publisher" class="form-control" value="{{search.publisher}}" placeholder="出版社"/>
+        </div>
+        <div class="form-group">
+            <select name="category" id="category" class="form-control">
+                <option value="">选择类别</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="radio-inline">
+                <input type="radio" name="status" id="pullon" value="1" />上架
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" id="pulloff" value="0"/>下架
+            </label>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">查询</button>
+            <button type="button" class="btn btn-default" onclick="clearAll();">清空</button>
+        </div>
+    </div>
+</form>
+<br>
+
+<table class="table">
+    <caption>
+        <div class="table-title">图书检索结果</div>
+        <ul class="pagination pagination-sm pull-left">
+            {{#pagedBookAnchor search}}
+            {{/pagedBookAnchor}}
+        </ul>
+        <div class="table-menu">
+            <a href="/book/create" class="btn btn-primary btn-xs">添加图书</a>
+        </div>
+    </caption>
+    <tr>
+        <th>
+            书名
+        </th>
+        <th>
+            ISBN
+        </th>
+        <th>
+            出版社
+        </th>
+        <th>
+            出版日期
+        </th>
+        <th>
+            作者
+        </th>
+        <th>
+            关键字
+        </th>
+        <th>
+            原价
+        </th>
+        <th>
+            折扣价
+        </th>
+        <th></th>
+    </tr>
+    {{#each model}}
+    <tr>
+        <td>
+            {{title}}
+        </td>
+        <td>
+            {{isbn}}
+        </td>
+        <td>
+            {{publisher}}
+        </td>
+        <td>
+            {{ formatDate publishdate}}
+        </td>
+        <td>
+            <ul>
+                {{#each authors}}
+                    <li>
+                        {{#if country}}
+                            ({{country}})
+                        {{/if}}
+                        {{name}}
+                    </li>
+                {{/each}}
+            </ul>
+        </td>
+        <td>
+            {{#each keywords}}
+                {{@this}}
+            {{/each}}
+        </td>
+        <td>
+            {{listprice}}
+        </td>
+        <td>
+            {{reducedprice}}
+        </td>
+        <td>
+            <a href="edit/{{_id}}" class="btn btn-primary btn-xs">修改</a>
+            <a href="bookimage/{{_id}}" class="btn btn-primary btn-xs">图片</a>
+            {{#if status}}
+                <button type="button" class="btn btn-primary btn-xs" onclick="pulloff('{{_id}}', '{{title}}')">下架</button>
+            {{else}}
+                <button type="button" class="btn btn-primary btn-xs" onclick="pullon('{{_id}}', '{{title}}')">上架</button>
+            {{/if}}
+        </td>
+    </tr>
+    {{/each}}
+</table>
+
+{{#contentFor 'scripts'}}
+    <script src="/javascripts/bootbox.min.js"></script>
+	<script>
+        function clearAll(){
+            $("input[type='text']").val("");
+            $("#category option")[0].selected =  true;
+            $('input:radio:checked').attr('checked',false);
+            $("#pullon").attr('checked', true);
+        }
+        
+        function pulloff(id, title){
+            bootbox.confirm("确实要下架商品【" + title + "】吗？", function(choice){
+               if(choice){
+                   $.ajax({
+                      url: '/book/pulloff/' + id,
+                      type: 'post',
+                      success:  function(data){
+                           bootbox.alert("下架成功!", function(){
+                               window.location.reload(true);
+                           });
+                      },
+                      error: function(data){
+                          bootbox.alert("下架失败！");
+                      }
+                   });
+               }
+            });
+        }
+        
+        function pullon(id, title){
+            bootbox.confirm("确实要上架商品【" + title + "】吗？", function(choice){
+               if(choice){
+                   $.ajax({
+                      url: '/book/pullon/' + id,
+                      type: 'post',
+                      success:  function(data){
+                           bootbox.alert("上架成功!", function(){
+                               window.location.reload(true);
+                           });
+                      },
+                      error: function(data){
+                          bootbox.alert("上架失败！");
+                      }
+                   });
+               }
+            });
+        }
+        
+        var categories;
+        var selectedCategory;
+        var selectedStatus = {{search.status}};
+        
+        {{#if search.category}}
+            selectedCategory = {{search.category}};
+        {{/if}}
+            
+		$(function(){
+            $.get("/category/json", function(data){
+               categories = data;
+               var eCategory = $("#category");
+               var selected;
+               for(var i=0;i<categories.length;i++){
+                   selected = (selectedCategory == categories[i]._id ? "selected" : "");
+                   eCategory.append("<option value='" + categories[i]._id + "' " + selected + 
+                       ">" + categories[i].name + "</option>");
+               } 
+            });
+            
+            if(selectedStatus == 0){
+                $("#pulloff").attr("checked", true);
+            } else{
+                $("#pullon").attr("checked", true);
+            }
+        });
+	</script>
+{{/contentFor}}

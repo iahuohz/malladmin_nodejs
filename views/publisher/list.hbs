@@ -1,0 +1,74 @@
+<ol class="breadcrumb">
+  <li>书目管理</li>
+  <li class="active">出版社</li>
+</ol>
+
+{{> operationresult}}
+
+<table class="table">
+    <caption>
+        <div class="table-title">出版社</div>
+        <div class="table-menu">
+            <div class="form-inline">
+                <div class="form-group">
+                    <input type="text" id="filterWord" onkeyup="filterPublishers()" 
+                        class="form-control input-sm" placeholder="出版社过滤">
+                </div>
+                <a href="/publisher/create" class="btn btn-primary btn-xs">添加出版社</a>
+            </div>
+        </div>
+    </caption>
+</table>
+
+
+<div class="well" id="publishersWell">
+    {{#each model}}
+      <div class="alert alert-success col-md-3">
+        {{name}}
+        <span class="remove-button glyphicon glyphicon-remove" onclick="removePublisher('{{name}}')"><span>
+      </div>
+    {{/each}}
+    <div class="clearfix"></div>
+</div>
+
+{{#contentFor 'scripts'}}
+    <script src="/javascripts/bootbox.min.js"></script>
+	<script>
+		function removePublisher(publisher){
+            var src = event.srcElement.parentNode;
+            bootbox.confirm("您确定要删除出版社【" + publisher + "】吗？", function (choice){
+                if (choice) {
+                    $.ajax({
+                       type:'post',
+                       url:'/publisher/delete/' + publisher,
+                       success: function(data, status){
+                           bootbox.alert("删除成功！");
+                           src.style.display = 'none';
+                       },
+                       error:function(data, status){
+                           bootbox.alert("删除出现错误！");
+                       }
+                    });
+                } 
+            });
+        }
+        
+        function getPublisherDiv(publisher){
+            return "<div class='alert alert-success col-md-3'>" + publisher + 
+                "<span class='remove-button glyphicon glyphicon-remove' onclick='removePublisher(\"" + publisher +
+                "\")'></span></div>";
+        }
+        
+        function filterPublishers(){
+            var filter = event.srcElement.value;
+            $.getJSON('/publisher/search?filter=' + filter, function(data){
+               var well = $("#publishersWell"); 
+               well.html("");
+               data.forEach(function(value, index){
+                   well.append(getPublisherDiv(value.name));
+               });
+               well.append('<div class="clearfix"></div>');  
+            });
+        }
+	</script>
+{{/contentFor}}

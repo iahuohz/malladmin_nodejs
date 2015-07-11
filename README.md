@@ -1,0 +1,1 @@
+使用Node.js, expressjs, handlebar, mongoose, mongodb, knockoutjs, jquery, bootstrap创建的书城后台管理程序

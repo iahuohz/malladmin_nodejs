@@ -1,0 +1,18 @@
+<div class="col-md-4">
+    <div>
+        <button type="button" class="btn btn-primary btn-xs" data-bind="click:addAuthor">新增作者</button>
+    </div>
+    <table data-bind="foreach:authors" >
+        <tr>
+            <td>
+                <input type="text" class="form-control" data-bind="value:country" placeholder="国籍">
+            </td>
+            <td>
+                <input type="text" class="form-control" data-bind="value:name" placeholder="姓名">
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-xs" data-bind="click:$parent.deleteAuthor">删除</button>
+            </td>
+        </tr>
+    </table>
+</div>

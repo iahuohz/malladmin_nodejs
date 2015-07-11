@@ -1,0 +1,70 @@
+{{#contentFor 'styles'}}
+	<style>
+		
+	</style>
+{{/contentFor}}
+
+<ol class="breadcrumb">
+  <li>用户管理</li>
+  <li class="active">用户信息</li>
+</ol>
+
+{{> operationresult}}
+
+<table class="table">
+    <caption>
+        <div class="table-title">所有用户</div>
+        <div class="table-menu">
+            <a href="/user/register" class="btn btn-primary btn-xs">添加用户</a>
+        </div>
+    </caption>
+    <tr>
+        <th>
+            用户名称
+        </th>
+        <th>
+            用户角色
+        </th>
+        <th></th>
+    </tr>
+    {{#each model}}
+    <tr>
+        <td>
+            {{username}}
+        </td>
+        <td>
+            {{#each roles}}
+				{{@this}}&nbsp;&nbsp;&nbsp;
+			{{/each}}
+        </td>
+        <td>
+            <a href="/user/edit/{{_id}}" class="btn btn-primary btn-xs">修改</a>
+            <button type="button" class="btn btn-primary btn-xs" onclick="removeUser('{{_id}}', '{{username}}')">删除</a>
+        </td>
+    </tr>
+    {{/each}}
+</table>
+
+{{#contentFor 'scripts'}}
+    <script src="/javascripts/bootbox.min.js"></script>
+	<script>
+		function removeUser(id, username){
+            bootbox.confirm("确实要删除用户【" + username + "】吗？", function(choice){
+               if(choice){
+                   $.ajax({
+                       url:'/user/delete/' + id,
+                       method:'post',
+                       success: function(data, status){
+                           bootbox.alert('删除成功！', function(){
+                              window.location.reload(); 
+                           });
+                       },
+                       error: function(data, status){
+                           bootbox.alert('删除失败！');
+                       }
+                   })
+               } 
+            });
+        }
+	</script>
+{{/contentFor}}

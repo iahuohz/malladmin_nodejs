@@ -1,0 +1,50 @@
+{{#contentFor 'styles'}}
+	<style>
+		
+	</style>
+{{/contentFor}}
+
+<ol class="breadcrumb">
+  <li>书目管理</li>
+  <li class="active">图书目录</li>
+</ol>
+
+{{> operationresult}}
+
+<table class="table">
+    <caption>
+        <div class="table-title">图书目录</div>
+        <div class="table-menu">
+            <a href="/category/create" class="btn btn-primary btn-xs">添加目录</a>
+        </div>
+    </caption>
+    <tr>
+        <th>
+            目录编号
+        </th>
+        <th>
+            目录名称
+        </th>
+        <th></th>
+    </tr>
+    {{#each model}}
+    <tr>
+        <td>
+            {{_id}}
+        </td>
+        <td>
+            {{name}}
+        </td>
+        <td>
+            <a href="category/{{_id}}" class="btn btn-primary btn-xs">修改</a>
+            <a href="category/delete/{{_id}}" class="btn btn-primary btn-xs">删除</a>
+        </td>
+    </tr>
+    {{/each}}
+</table>
+
+{{#contentFor 'scripts'}}
+	<script>
+		
+	</script>
+{{/contentFor}}

@@ -1,0 +1,55 @@
+<ol class="breadcrumb">
+  <li>书目管理</li>
+  <li class="active">添加目录</li>
+</ol>
+
+{{> operationresult}}
+
+<form id="createForm" method="post" action="/category/create">
+	<div class="form-horizontal">
+		<div class="table-title">主目录信息</div>
+    <hr />
+    <div class="form-group">
+      <lable class="control-label col-md-2">目录名称：</lable>
+      <div class="col-md-4">
+	      <input type="text" class="form-control" name="name" value="{{model.name}}">
+      </div>
+      <div class="form-control-static">
+      </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-4">
+            <input type="submit"  value="确定" class="btn btn-primary" />
+            <a href="/category" class="btn btn-default">返回</a>
+        </div>
+    </div>
+	</div>
+</form>
+
+{{#contentFor 'scripts'}}
+  <script src="/javascripts/jquery.validate.min.js"></script>
+	<script>
+		$(function () {
+          $("#createForm").validate({
+              submitHandler: function (form) {
+                  form.submit();
+              },
+              rules: {
+                  name: {
+                      required: true,
+                      maxlength: 50
+                  }
+              },
+              messages: {
+                  name : {
+                      required: "*",
+                      maxlength: "最大字符长度为50"
+                  }
+              },
+              errorPlacement: function(error, element) {
+                 error.appendTo(element.parent().next());
+              }
+          });
+      });
+	</script>
+{{/contentFor}}

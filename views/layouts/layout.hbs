@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="/stylesheets/style.css"/>
+		{{{block "styles"}}}
+	</head>
+	<body>
+		<!-- 顶部菜单栏开始 -->
+		<div class="navbar navbar-inverse navbar-fixed-top">
+		    <div class="container">
+		        <div class="navbar-header">
+		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		                <span class="sr-only">Toggle navigation</span>
+		                <span class="icon-bar"></span>
+		                <span class="icon-bar"></span>
+		                <span class="icon-bar"></span>
+		            </button>
+		            <a class="navbar-brand" href="/">
+		                <img src="/images/eeglogo2.png" class="img-responsive" style="width: 120px; height: 50px" alt="EEG Logo" />
+		            </a>
+		        </div>
+		        <div class="navbar-collapse collapse">
+		            <ul class="nav navbar-nav" id="menu">
+		                <li class="active"><a href="/">首页</a></li>
+						<li class="dropdown" data-role="category">
+		                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                        书目管理
+		                        <span class="caret"></span>
+		                    </a>
+		                    <ul class="dropdown-menu">
+		                        <li><a href="/category" data-role="category">图书目录</a></li>
+								<li><a href="/keyword" data-role="category">关键字</a></li>
+								<li><a href="/publisher" data-role="category">出版社</a></li>
+		                    </ul>
+		                </li>
+		                <li class="dropdown" data-role="book" >
+		                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                        图书管理
+		                        <span class="caret"></span>
+		                    </a>
+		                    <ul class="dropdown-menu">
+		                        <li><a href="/book/create" data-role="book">添加图书</a></li>
+								<li><a href="/book/search" data-role="book">搜索图书</a></li>	
+		                    </ul>
+		                </li>
+		                <li class="dropdown" data-role="customer">
+		                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                        客户信息
+		                        <span class="caret"></span>
+		                    </a>
+		                    <ul class="dropdown-menu">
+								<li><a href="/customer/region" data-role="customer">区域信息</a></li>
+		                        <li><a href="/customer/search" data-role="customer">搜索客户</a></li>
+		                    </ul>
+		                </li>
+		                <li class="dropdown" data-role="order">
+		                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                        订单管理
+		                        <span class="caret"></span>
+		                    </a>
+		                    <ul class="dropdown-menu">
+								<li><a href="/order/todos" data-role="order">待处理订单</a></li>
+		                        <li><a href="/order/search" data-role="order">搜索订单</a></li>
+		                    </ul>
+		                </li>
+		                <li class="dropdown" data-role="user">
+		                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                        用户管理
+		                        <span class="caret"></span>
+		                    </a>
+		                    <ul class="dropdown-menu">
+								<li><a href="/user/register" data-role="user">创建用户</a></li>
+								<li><a href="/user/list" data-role="user">所有用户</a></li>
+		                    </ul>
+		                </li>
+		            </ul>
+		            <ul class="nav navbar-nav navbar-right">
+		                {{> loginstatus }}
+		            </ul>
+		        </div>
+		    </div>
+		</div>
+		<!-- 顶部菜单栏结束 -->
+		
+		<div class="container">
+			{{{body}}}
+		</div>
+		
+		<div class="container">
+			<hr />
+			<p class="text-center">
+			    <img src="/images/eeglogo2.png" style="width:100px" />
+			    <span class="bottom">2015 北京中软国际教育科技有限公司 &middot; 卓越工程组</span>
+			    <span class="pull-right"><a href="#">回到顶部</a></span>
+			</p>
+		</div>
+		<script src="/javascripts/jquery-2.1.0.min.js"></script>
+		<script src="/bootstrap/js/bootstrap.min.js"></script>
+		<script src="/javascripts/menu.js"></script>
+		
+		{{{block "scripts"}}}
+	</body>
+</html>

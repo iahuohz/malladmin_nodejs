@@ -1,0 +1,74 @@
+<ol class="breadcrumb">
+  <li>书目管理</li>
+  <li class="active">关键字</li>
+</ol>
+
+{{> operationresult}}
+
+<table class="table">
+    <caption>
+        <div class="table-title">关键字</div>
+        <div class="table-menu">
+            <div class="form-inline">
+                <div class="form-group">
+                    <input type="text" id="filterWord" onkeyup="filterKeywords()" 
+                        class="form-control input-sm" placeholder="关键字过滤">
+                </div>
+                <a href="/keyword/create" class="btn btn-primary btn-xs">添加关键字</a>
+            </div>
+        </div>
+    </caption>
+</table>
+
+
+<div class="well" id="keywordsWell">
+    {{#each model}}
+      <div class="alert alert-success col-md-3">
+        {{name}}
+        <span class="remove-button glyphicon glyphicon-remove" onclick="removeKeyword('{{name}}')"><span>
+      </div>
+    {{/each}}
+    <div class="clearfix"></div>
+</div>
+
+{{#contentFor 'scripts'}}
+    <script src="/javascripts/bootbox.min.js"></script>
+	<script>
+		function removeKeyword(keyword){
+            var src = event.srcElement.parentNode;
+            bootbox.confirm("您确定要删除关键字【" + keyword + "】吗？", function (choice){
+                if (choice) {
+                    $.ajax({
+                       type:'post',
+                       url:'/keyword/delete/' + keyword,
+                       success: function(data, status){
+                           bootbox.alert("删除成功！");
+                           src.style.display = 'none';
+                       },
+                       error:function(data, status){
+                           bootbox.alert("删除出现错误！");
+                       }
+                    });
+                } 
+            });
+        }
+        
+        function getKeywordDiv(keyword){
+            return "<div class='alert alert-success col-md-3'>" + keyword + 
+                "<span class='remove-button glyphicon glyphicon-remove' onclick='removeKeyword(\"" + keyword +
+                "\")'></span></div>";
+        }
+        
+        function filterKeywords(){
+            var filter = event.srcElement.value;
+            $.getJSON('/keyword/search?filter=' + filter, function(data){
+               var well = $("#keywordsWell"); 
+               well.html("");
+               data.forEach(function(value, index){
+                   well.append(getKeywordDiv(value.name));
+               });
+               well.append('<div class="clearfix"></div>');  
+            });
+        }
+	</script>
+{{/contentFor}}
