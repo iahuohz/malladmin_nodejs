@@ -169,7 +169,7 @@ router.post('/bookimage/:bookId', function (req, res, next) {
                             } else {
                                 res.locals.operationResult = new OperationResult(true, '文件上传成功！');
                             }
-                            res.render('book/bookimage' + bookId, { model: book });
+                            res.render('book/bookimage', { model: book });
                         });
                     } else {
                         res.locals.operationResult = new OperationResult(true, '文件上传成功！');
