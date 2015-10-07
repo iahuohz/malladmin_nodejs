@@ -1,7 +1,0 @@
-{"_id":NumberInt(1),"name":"Web应用"}
-{"_id":NumberInt(2),"name":"移动应用"}
-{"_id":NumberInt(3),"name":"云计算与大数据"}
-{"_id":NumberInt(4),"name":"物联网与智能硬件"}
-{"_id":NumberInt(5),"name":"软件工程"}
-{"_id":NumberInt(6),"name":"系统管理"}
-{"_id":NumberInt(7),"name":"编程语言"}
